@@ -1,8 +1,8 @@
-import { galleryItems } from './gallery-items.js';
+// Add imports above this line
+import { galleryItems } from './gallery-items';
 // Change code below this line
 
 console.log(galleryItems);
-
 
 import SimpleLightbox from 'simplelightbox';
 
@@ -11,42 +11,21 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const gallery = document.querySelector('.gallery');
 const items = [];
 
-galleryItems.forEach((element) => {
-  const galleryItem = document.createElement('div');
-  galleryItem.className = 'gallery__item';
+galleryItems.forEach(element => {
   const galleryLink = document.createElement('a');
   galleryLink.className = 'gallery__link';
   galleryLink.href = element.original;
   const galleryImage = document.createElement('img');
   galleryImage.className = 'gallery__image';
   galleryImage.src = element.preview;
-  galleryImage.setAttribute('data-source', element.original);
+  galleryImage.setAttribute('title', element.description);
   galleryImage.alt = element.description;
 
-  galleryItem.append(galleryLink);
   galleryLink.append(galleryImage);
-  items.push(galleryItem);
+  items.push(galleryLink);
 });
-
 gallery.append(...items);
 
-gallery.addEventListener('click', (el) => {
-  el.preventDefault();
-  if (el.target.nodeName !== 'IMG') {
-    return;
-  }
-
-  const onSelectImg = el.target.getAttribute('data-source');
-
-  const elementEl = basicLightbox.create(
-    `<img src="${onSelectImg}" width="800" height="600">`
-  );
-
-  elementEl.show();
-
-  gallery.addEventListener('keydown', (el) => {
-    if (el.key === 'Escape') {
-      elementEl.close();
-    }
-  });
+new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
 });
